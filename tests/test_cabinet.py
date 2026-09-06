@@ -943,13 +943,15 @@ def test_the_launcher_imports_no_game():
     import subprocess
     import sys
 
-    # All three cabinets' modules, not two: this guard listed `boole` and
-    # `lavadome` and would have stayed green through an import of `drift`.
+    # Every cabinet's module, not most of them: this guard listed `boole` and
+    # `lavadome` and would have stayed green through an import of `drift`. It
+    # is a hand-kept list because the point is to name modules this package
+    # must NOT have imported, and it cannot ask the games for that.
     code = (
         "import sys, magmacrunch, magmacrunch.app, magmacrunch.banner, "
         "magmacrunch.cabinets, magmacrunch.cards, magmacrunch.scenes, "
         "magmacrunch.theme, magmacrunch.__main__; "
-        "leaked = [m for m in ('boole', 'lavadome', 'drift') "
+        "leaked = [m for m in ('boole', 'lavadome', 'drift', 'jovian') "
         "if m in sys.modules]; "
         "print(leaked)"
     )

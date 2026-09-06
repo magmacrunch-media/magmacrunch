@@ -29,7 +29,7 @@ pipx install magmacrunch
 
 Either one puts `magmacrunch` — and each cabinet's own command — on your PATH
 inside an isolated virtualenv. Whichever route you take, that one install brings
-the arcade and all three cabinets.
+the arcade and all four cabinets.
 
 ### Getting uv
 
@@ -105,6 +105,7 @@ magmacrunch          the arcade — every cabinet on the machine
 george-boole         2048 with logic gates, on its own
 lava-dome            solo hold'em, on its own
 moonlight-drift      the endless drifter, on its own
+jovian               the rail over Jupiter, on its own
 ```
 
 A game plays identically whether you start it directly or pick it from the
@@ -187,7 +188,8 @@ in [`banner.py`](magmacrunch/banner.py) and nothing else.
 
 Choosing a cabinet starts it on the terminal the arcade is already holding.
 Leaving the game brings you back here. Every game is also its own command
-(`george-boole`, `lava-dome`, `moonlight-drift`) and plays identically either way — the arcade is
+(`george-boole`, `lava-dome`, `moonlight-drift`, `jovian`) and plays identically either
+way — the arcade is
 not a wrapper around them, it is the same host they run on.
 
 ## What is installed
@@ -227,8 +229,9 @@ cabinets in the table below are worked examples of it.
 | `magmacrunch-george-boole` | 2048 played with logic gates |
 | `magmacrunch-thld` | Solo hold'em against a climbing threshold |
 | `magmacrunch-moonlight-drift` | Thread the columns; hold to climb |
+| `magmacrunch-jhc` | Know what you are shooting at |
 
-Installing `magmacrunch` installs all three.
+Installing `magmacrunch` installs all four.
 
 ## Requires
 

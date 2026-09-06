@@ -33,10 +33,20 @@ EMPTY_FLOOR = (
     "NO CABINETS INSTALLED",
     "",
     *(f"pip install {name}" for name in cabinets.PACKAGES),
-    "",
     "Any package declaring a magmacrunch.games entry point",
     "appears here - no release of the arcade needed.",
 )
+# The blank line that used to sit above that closing sentence is gone, spent on
+# the fourth cabinet. `test_the_empty_floor_still_clears_the_footer_at_the_
+# smallest_size` is the tripwire that said so, and it was written predicting
+# precisely this: it fails when the floor outgrows the room, and the choice is
+# to raise MIN_ROWS or shorten the text. Raising the floor would lock out
+# terminals that can otherwise play, so the text gave way.
+#
+# **This screen grows by a line per cabinet and there is no slack left.** A
+# fifth trips the same wire with nothing cheap left to cut, so that is the
+# point at which it stops listing every package and says something that does
+# not grow.
 
 
 def _fit(text: str, width: int) -> str:
