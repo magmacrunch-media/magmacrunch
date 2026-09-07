@@ -11,6 +11,7 @@ installed is a worse suite. The real games are covered by their own repos.
 """
 
 import asyncio
+import pathlib
 
 import pytest
 
@@ -410,7 +411,7 @@ def test_an_empty_arcade_says_so_rather_than_drawing_nothing():
             await asyncio.sleep(0.25)
             text = buffer_text(app)
             assert "NO CABINETS INSTALLED" in text
-            assert "pip install magmacrunch-george-boole" in text
+            assert "pip install magmacrunch" in text
             assert cards.TL not in text
             app.host.quit()
 
@@ -1013,24 +1014,53 @@ def test_version_prints_it(capsys, monkeypatch):
 # ── The empty floor names every cabinet ─────────────────────────────
 
 
-def test_the_floor_and_the_listing_suggest_the_same_cabinets(capsys):
-    """Two screens say how to get a cabinet, and they had drifted.
+def test_the_listing_names_every_cabinet(capsys):
+    """A terminal scrolls, so `--list` can name them all and should.
 
-    Each named two of the three, omitting moonlight-drift - on precisely the
-    screen that exists because the player has none and needs to be told what
-    to install. They now read one tuple; this is what keeps them doing so.
+    The empty floor used to as well, and stopped at the fifth cabinet: it is a
+    fixed-height screen and it had run out of rows. The two surfaces still read
+    one tuple - magmacrunch.cabinets.PACKAGES - and what changed is only which
+    of them prints it.
     """
     from magmacrunch.__main__ import _print
     from magmacrunch.cabinets import PACKAGES
+
+    _print([])
+    listing = capsys.readouterr().out
+    for name in PACKAGES:
+        assert f"pip install {name}" in listing
+
+
+def test_the_empty_floor_cannot_grow_with_the_cabinet_list():
+    """The property that replaced enumerating, checked structurally.
+
+    A screen with a fixed height cannot carry a list that grows without bound;
+    the tripwire below fired on the fifth cabinet and there was nothing cheap
+    left to cut. So the floor stopped reading the list at all - and asserting
+    that it does not import it is a stronger statement than measuring the text,
+    because it cannot be satisfied by a floor that happens to be short today.
+    """
+    import magmacrunch.scenes as scenes
+
+    assert not hasattr(scenes, "cabinets"), (
+        "scenes imports magmacrunch.cabinets again - the floor can grow"
+    )
+    source = pathlib.Path(scenes.__file__).read_text(encoding="utf-8")
+    body = source.split('EMPTY_FLOOR = (', 1)[1].split(")", 1)[0]
+    assert "PACKAGES" not in body
+
+
+def test_the_empty_floor_tells_a_player_something_that_works():
+    """One line that brings every cabinet, because they are all dependencies.
+
+    Naming them individually was never instructions - it was a list of things
+    a single `pip install magmacrunch` already does.
+    """
     from magmacrunch.scenes import EMPTY_FLOOR
 
     floor = "\n".join(EMPTY_FLOOR)
-    _print([])
-    listing = capsys.readouterr().out
-
-    for name in PACKAGES:
-        assert f"pip install {name}" in floor
-        assert f"pip install {name}" in listing
+    assert "pip install magmacrunch" in floor
+    assert "NO CABINETS INSTALLED" in floor
 
 
 def test_the_empty_floor_names_every_cabinet_the_arcade_installs():

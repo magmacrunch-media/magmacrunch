@@ -21,32 +21,45 @@ so selection state lives here instead, in :attr:`CabinetScene.selected`.
 
 from __future__ import annotations
 
-from magmacrunch import banner, cabinets, cards, theme
+from magmacrunch import banner, cards, theme
 
 MENU_HELP = "↑↓←→ CHOOSE    ENTER PLAY    Q QUIT"
 
-#: What an arcade with nothing in it says. The install lines come from
-#: :data:`magmacrunch.cabinets.PACKAGES` rather than being written out here,
-#: because ``--list`` prints the same suggestions and the two had drifted -
-#: see that module.
+#: What an arcade with nothing in it says. Fixed text, and fixed on purpose -
+#: this module no longer imports :mod:`magmacrunch.cabinets` at all, which is
+#: what makes "the floor cannot grow with the cabinet list" a property of the
+#: code rather than a promise in a comment.
 EMPTY_FLOOR = (
     "NO CABINETS INSTALLED",
     "",
-    *(f"pip install {name}" for name in cabinets.PACKAGES),
+    "pip install magmacrunch",
+    "",
     "Any package declaring a magmacrunch.games entry point",
     "appears here - no release of the arcade needed.",
 )
-# The blank line that used to sit above that closing sentence is gone, spent on
-# the fourth cabinet. `test_the_empty_floor_still_clears_the_footer_at_the_
-# smallest_size` is the tripwire that said so, and it was written predicting
-# precisely this: it fails when the floor outgrows the room, and the choice is
-# to raise MIN_ROWS or shorten the text. Raising the floor would lock out
-# terminals that can otherwise play, so the text gave way.
+# **This no longer grows with the cabinet list, and that was the whole point of
+# the fifth one.**
 #
-# **This screen grows by a line per cabinet and there is no slack left.** A
-# fifth trips the same wire with nothing cheap left to cut, so that is the
-# point at which it stops listing every package and says something that does
-# not grow.
+# It used to print `pip install <name>` per package. The comment that stood
+# here predicted the end of that: the fourth cabinet spent the last blank line,
+# and a fifth would trip `test_the_empty_floor_still_clears_the_footer_at_the_
+# smallest_size` with nothing cheap left to cut. Adding roderick-tron did
+# exactly that, on the row the tripwire named -- the floor reached row 14 and
+# the footer starts at 13 in a 36x17 terminal.
+#
+# The options were to raise MIN_ROWS, which locks out terminals that can
+# otherwise play, or to stop enumerating. Enumerating is what gave way, because
+# one line brings every cabinet anyway: they are all dependencies of
+# `magmacrunch` itself, so naming them individually was never instructions, it
+# was a list of things the single install already does.
+#
+# `magmacrunch --list` still names every package, and should: a terminal
+# scrolls and a fixed-height screen does not. That difference is why these two
+# surfaces stopped sharing their text -- not a return of the drift the shared
+# tuple was introduced to stop. :mod:`magmacrunch.cabinets` still holds the one
+# list, `--list` still prints all of it, and
+# `test_the_empty_floor_names_every_cabinet_the_arcade_installs` still checks it
+# against the dependency list.
 
 
 def _fit(text: str, width: int) -> str:

@@ -26,6 +26,7 @@ PACKAGES = (
     "magmacrunch-thld",
     "magmacrunch-moonlight-drift",
     "magmacrunch-jhc",
+    "magmacrunch-roderick-tron",
 )
 
 __all__ = ["PACKAGES"]
