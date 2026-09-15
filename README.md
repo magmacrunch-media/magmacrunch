@@ -269,6 +269,12 @@ Every substitute is exactly one cell wide, so a plain screen has the same
 layout as a fancy one rather than a reflowed approximation of it. See
 `magmacrunch.engine.ui.glyphs`.
 
+
+## Support This Project
+
+If you find this useful, consider supporting its development:
+
+[![Sponsor](https://img.shields.io/badge/%E2%9D%A4_Sponsor-pink)](https://github.com/sponsors/magmacrunch-media)
 ## Licence
 
 Two licences, split at the same seam the code is. The launcher is PolyForm
