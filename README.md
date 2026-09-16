@@ -275,6 +275,7 @@ layout as a fancy one rather than a reflowed approximation of it. See
 If you find this useful, consider supporting its development:
 
 [![Sponsor](https://img.shields.io/badge/%E2%9D%A4_Sponsor-pink)](https://github.com/sponsors/magmacrunch-media)
+[![PayPal](https://img.shields.io/badge/Donate-PayPal-blue)](https://www.paypal.biz/magmacrunchmedia)
 ## Licence
 
 Two licences, split at the same seam the code is. The launcher is PolyForm
